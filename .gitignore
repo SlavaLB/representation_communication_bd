@@ -1,0 +1,23 @@
+# Python-generated files
+**__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+**/venv
+**.venv
+notification/venv
+**.env
+**logs/
+
+backend/app/static/prod_cal
+backend/app/static/users
+backend/app/static/attachments
+
+*.xml
+*.iml
+
+**/.idea
