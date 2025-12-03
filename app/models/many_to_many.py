@@ -1,7 +1,9 @@
+from datetime import datetime
+
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from models.base import Base
+from models.base import Base, BaseModel
 
 
 # Ассоциативная таблица
@@ -18,15 +20,17 @@ class PersonCountry(Base):
     person = relationship("Person", back_populates="country_associations")
     country = relationship("Country", back_populates="person_associations")
 
+    created_at = Column(DateTime, default=datetime.now, nullable=False)
+
     def __repr__(self):
         return f"<PersonCountry(person_id={self.person_id}, country_id={self.country_id})>"
 
 
-class Country(Base):
+class Country(BaseModel):
     """Страна (M:M с Person)"""
     __tablename__ = "country"
 
-    id = Column(Integer, primary_key=True)
+    # id = Column(Integer, primary_key=True)
     name = Column(String(50))
 
     # M:M обратно

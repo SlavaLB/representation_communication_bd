@@ -33,14 +33,14 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 
-from models.base import Base
+from models.base import BaseModel
 
 
-class Person(Base):
+class Person(BaseModel):
     """Человек"""
     __tablename__ = "person"
 
-    id = Column(Integer, primary_key=True)
+    # id = Column(Integer, primary_key=True)
     name = Column(String(50))
 
     # 1:1 - ОДИН паспорт

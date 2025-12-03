@@ -1,5 +1,7 @@
 from typing import Dict, Any
 
+from schemas.person import PersonResponse
+
 
 class EndpointPersonDocs:
     """Класс для хранения документации эндпоинтов"""
@@ -21,6 +23,7 @@ class EndpointPersonDocs:
         **Возвращает:**
         - Объект Person с полной информацией
         """,
+        "response_model": PersonResponse,
         "responses": {
             200: {"description": "Успешный ответ"},
             404: {"description": "Человек не найден"},

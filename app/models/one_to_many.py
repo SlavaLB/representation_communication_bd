@@ -1,14 +1,14 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from models.base import Base
+from models.base import BaseModel
 
 
-class Phone(Base):
+class Phone(BaseModel):
     """Телефон (M:1 с Person)"""
     __tablename__ = "phone"
 
-    id = Column(Integer, primary_key=True)
+    # id = Column(Integer, primary_key=True)
     number = Column(String(50))
     type = Column(String(50))  # "рабочий", "домашний"
 
