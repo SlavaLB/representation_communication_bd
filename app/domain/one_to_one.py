@@ -1,8 +1,7 @@
-from typing import Optional, List, Dict, Any
+from typing import Optional
 
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy import and_, or_, select, inspect
+from sqlalchemy import and_, select
 from sqlalchemy.orm import joinedload
 
 from models import Passport, Person
@@ -35,7 +34,7 @@ class OneToOne:
     async def get_person_by_id(self, person_id: int) -> Optional[PersonResponse]:
         """
             Получение человека по ID с паспортом.
-            Используем selectinload для предотвращения N+1 проблемы.
+            Используем joinedload для предотвращения N+1 проблемы.
         """
         stmt = select(Person).options(joinedload(Person.passport)).where(and_(Person.id == person_id))
 
@@ -43,26 +42,18 @@ class OneToOne:
         result = await self.session.execute(stmt)
         person = result.scalar_one_or_none()
 
-        inspector = inspect(person)
-        all_model_fields = set(inspector.mapper.columns.keys())
-        print(f"Все поля модели: {all_model_fields}")
-        # {'id', 'name', 'age', 'email', 'password_hash', 'created_at', 'updated_at'}
+        person.custom_field = "Сюда можно класть свои значения"
+        return person
 
-        # 2. Получаем поля схемы
-        schema_fields = set(PersonResponse.model_fields.keys())
-        print(f"Поля схемы: {schema_fields}")
-        # {'name', 'passport', 'created_at', 'custom_field'}
+    async def get_person_by_id_without_passport(self, person_id: int) -> Optional[PersonResponse]:
+        """
+            Получение человека по ID без данных о паспорте.
+        """
+        stmt = select(Person).where(and_(Person.id == person_id))
 
-        # 3. Находим разницу
-        excluded_fields = all_model_fields - schema_fields
-        print(f"Исключенные поля: {excluded_fields}")
-        # {'id', 'age', 'email', 'password_hash', 'updated_at'}
+        # Выполняем запрос
+        result = await self.session.execute(stmt)
+        person = result.scalar_one_or_none()
 
-        # 4. Создаем красивую строку
-        excluded_str = f"Исключены: {', '.join(sorted(excluded_fields))}"
-        print(excluded_str)
-        # "Исключены: age, email, id, password_hash, updated_at"
-
-        # 5. Добавляем в custom_field
-        person.custom_field = excluded_str
+        person.custom_field = "Сюда можно класть свои значения, схема ответа позволит"
         return person

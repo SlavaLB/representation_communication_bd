@@ -11,18 +11,18 @@ class PersonBase(BaseModel):
 
 
 # Базовая модель для паспорта
-# id и person_id исключаем из response
-class PassportBase(BaseModel):
-    number: str = Field(..., description="Номер паспорта", examples=["4501123456",])
-
-
-# Модель для ответа с паспортом
-class PassportResponse(PassportBase):
-    ...
+class PassportResponse(BaseModel):
+    # id и person_id исключаем из response
+    number: str = Field(..., description="Номер паспорта", examples=["4501123456", ])
 
 
 # Полная модель для ответа
 class PersonResponse(PersonBase):
     passport: Optional[PassportResponse] = Field(None, description="Данные паспорта, если есть")
+    created_at: Optional[datetime] = Field(None, description="Дата создания записи", examples=["2024-01-15T10:30:00",])
+    custom_field: str = Field(None, description="Кастомное поле, не из модели", examples=["Пользователь активен",])
+
+
+class PersonResponseWithoutPassport(PersonBase):
     created_at: Optional[datetime] = Field(None, description="Дата создания записи", examples=["2024-01-15T10:30:00",])
     custom_field: str = Field(None, description="Кастомное поле, не из модели", examples=["Пользователь активен",])

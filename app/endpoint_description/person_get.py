@@ -1,6 +1,6 @@
 from typing import Dict, Any
 
-from schemas.person import PersonResponse
+from schemas.person import PersonResponse, PersonResponseWithoutPassport
 
 
 class EndpointPersonDocs:
@@ -24,6 +24,29 @@ class EndpointPersonDocs:
         - Объект Person с полной информацией
         """,
         "response_model": PersonResponse,
+        "responses": {
+            200: {"description": "Успешный ответ"},
+            404: {"description": "Человек не найден"},
+            400: {"description": "Неверный ID"},
+            500: {"description": "Внутренняя ошибка сервера"}
+        }
+    }
+
+    GET_PERSON_INFO_WITHOUT_PASSPORT = {
+        "summary": "Получение человека без данных о паспорте",
+        "description": """
+            Возвращает информацию о человеке по ID.
+
+            **Особенности:**
+            - Не загружает данные паспорта
+
+            **Параметры:**
+            - person_id: ID человека (передается в заголовке Person-ID)
+
+            **Возвращает:**
+            - Объект Person с полной информацией
+            """,
+        "response_model": PersonResponseWithoutPassport,
         "responses": {
             200: {"description": "Успешный ответ"},
             404: {"description": "Человек не найден"},

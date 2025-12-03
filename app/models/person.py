@@ -50,7 +50,7 @@ class Person(BaseModel):
         uselist=False,                 # КЛЮЧЕВОЙ ПАРАМЕТР для 1:1.
                                        # Говорит SQLAlchemy, что это один объект, а не список
         cascade="all, delete-orphan",  # Удалит паспорт при удалении человека
-        lazy="joined"
+        # lazy="joined"
     )
     # 1:M - МНОГО телефонов
     phones = relationship(
