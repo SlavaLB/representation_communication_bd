@@ -10,11 +10,6 @@ class Settings(BaseSettings):
     DB_PASSWORD: str = ""  # Пустая строка по умолчанию
     DB_DRIVER: str = "mysql+asyncmy"
 
-    # FastAPI
-    APP_HOST: str = "0.0.0.0"
-    APP_PORT: int = 8000
-    DEBUG: bool = True
-
     @property
     def DATABASE_URL(self) -> str:
         """Строим строку подключения к БД"""
@@ -47,7 +42,4 @@ if __name__ == "__main__":
     print(f"🔑 Пароль: {'*' * len(settings.DB_PASSWORD) if settings.DB_PASSWORD else '(пустой)'}")
     print(f"🌐 Хост: {settings.DB_HOST}:{settings.DB_PORT}")
     print(f"🔗 URL подключения: {settings.DATABASE_URL}")
-    print("=" * 60)
-    print(f"🚀 FastAPI: http://{settings.APP_HOST}:{settings.APP_PORT}")
-    print(f"📝 Режим отладки: {settings.DEBUG}")
     print("=" * 60)
